@@ -16,18 +16,15 @@ class GitHubStorage extends BaseStorage{
     }
     
     delete(){
+        // TODO: Find a way to get the blob SHA of the target file
         return Promise.reject("Not implemented");
     }
     
     exists(filename, targetDir){
         const filepath = path.join(targetDir || this.getTargetDir(), filename);
         return request(this.getUrl(filepath))
-            .then(res => {
-                Promise.resolve(res.statusCode === 200);
-            })
-            .catch(() => {
-                Promise.resolve(false);
-            });
+            .then(res => (res.statusCode === 200))
+            .catch(() => false);
     }
     
     read(options){
@@ -37,7 +34,7 @@ class GitHubStorage extends BaseStorage{
         const config = this.config;
         const dir = targetDir || this.getTargetDir();
         return Promise.join(this.getUniqueFileName(file, dir), Promise.promisify(fs.readFile)(file.path, "base64"), (filename, data) => {
-            // Authenticate because it only stores credentials for the next request
+            // Authenticate for the next request
             this.client.authenticate({
                 type: config.type,
                 username: config.user,
@@ -52,14 +49,11 @@ class GitHubStorage extends BaseStorage{
                 content: data
             });
         })
-            .then(res => {
-                return Promise.resolve(res.data.content.download_url);
-            })
+            .then(res => res.data.content.download_url)
             .catch(Promise.reject);
     }
     
     serve(){
-        // No need to do anything, we're already returning absolute URLs
         return (req, res, next) => {
             next();
         };
