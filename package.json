@@ -1,6 +1,6 @@
 {
   "name": "ghost-github",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Storage on GitHub for Ghost.",
   "main": "index.js",
   "scripts": {
