@@ -1,0 +1,34 @@
+{
+  "name": "ghost-github",
+  "version": "1.0.1",
+  "description": "Storage on GitHub for Ghost.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifvictr/ghost-github.git"
+  },
+  "keywords": [
+    "adapter",
+    "blog",
+    "ghost",
+    "github",
+    "storage",
+    "store"
+  ],
+  "author": "Victor Truong <me@ifvictr.com> (https://ifvictr.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ifvictr/ghost-github/issues"
+  },
+  "homepage": "https://github.com/ifvictr/ghost-github#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "ghost-storage-base": "0.0.1",
+    "github": "^9.2.0",
+    "remove-leading-slash": "^1.0.1",
+    "request": "^2.81.0"
+  }
+}
