@@ -11,8 +11,16 @@ const request = Promise.promisify(require("request"));
 class GitHubStorage extends BaseStorage {
     constructor(config) {
         super();
+
         this.client = new GitHub();
         this.config = config;
+
+        this.client.authenticate({
+            type: config.type,
+            username: config.user,
+            password: config.password,
+            token: config.token,
+        });
     }
 
     delete() {
@@ -23,31 +31,23 @@ class GitHubStorage extends BaseStorage {
     exists(filename, targetDir) {
         const filepath = path.join(targetDir || this.getTargetDir(), filename);
         return request(this.getUrl(filepath))
-            .then(res => (res.statusCode === 200))
+            .then(res => res.statusCode === 200)
             .catch(() => false);
     }
 
     read(options) {}
 
     save(file, targetDir) {
-        const config = this.config;
         const dir = targetDir || this.getTargetDir();
         return Promise.join(this.getUniqueFileName(file, dir), Promise.promisify(fs.readFile)(file.path, "base64"), (filename, data) => {
-                // Authenticate for the next request
-                this.client.authenticate({
-                    type: config.type,
-                    username: config.user,
-                    password: config.password,
-                    token: config.token,
-                });
-                return this.client.repos.createFile({
-                    owner: config.user,
-                    repo: config.repo,
-                    message: "Add new image",
-                    path: removeLeadingSlash(filename),
-                    content: data
-                });
-            })
+            return this.client.repos.createFile({
+                owner: this.config.user,
+                repo: this.config.repo,
+                message: "Add new image",
+                path: removeLeadingSlash(filename),
+                content: data
+            });
+        })
             .then(res => res.data.content.download_url)
             .catch(Promise.reject);
     }

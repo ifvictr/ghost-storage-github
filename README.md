@@ -3,14 +3,14 @@ Storage on GitHub for Ghost. Good for blogs hosted on platforms without a persis
 
 ## Installation
 ```
-cd /path/to/your/ghost/directory
+cd /path/to/your/ghost/installation
 npm install ghost-github
 mkdir content/storage
 cp -r node_modules/ghost-github content/storage/ghost-github
 ```
 
 ## Usage
-Add the following to your configuration file depending on the version of Ghost you have.
+Add the following to your configuration file depending on the version of Ghost you have. Replace `...` with the appropriate information.
 
 ### < 1.0.0
 ```js
