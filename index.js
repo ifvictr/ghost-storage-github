@@ -43,6 +43,7 @@ class GitHubStorage extends BaseStorage {
             return this.client.repos.createFile({
                 owner: this.config.user,
                 repo: this.config.repo,
+                branch: this.config.branch || "master",
                 message: "Add new image",
                 path: removeLeadingSlash(filename),
                 content: data
