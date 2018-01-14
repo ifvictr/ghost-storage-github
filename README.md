@@ -33,7 +33,9 @@ storage: {
         // Optional: Will save to branch of repo, defaults to master
         branch: "gh-pages",
         // Optional: Will place the image in the specified directory rather than root
-        destination: ""
+        destination: "",
+        // Optional: Will use base URL for image requests
+        baseUrl: "https://cdn.example.com"
     }
 }
 ```

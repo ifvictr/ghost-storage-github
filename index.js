@@ -1,14 +1,20 @@
 "use strict";
 
-const BaseStorage = require("ghost-storage-base");
-const fs = require("fs");
-const GitHub = require("github");
-const path = require("path");
 const Promise = require("bluebird");
+const BaseStorage = require("ghost-storage-base");
+const GitHub = require("github");
+const fs = require("fs");
+const path = require("path");
+
+const buildUrl = require("build-url");
+const isUrl = require("is-url");
 const removeLeadingSlash = require("remove-leading-slash");
 const request = Promise.promisify(require("request"));
 
 class GitHubStorage extends BaseStorage {
+    /**
+     * @param {Object} config
+     */
     constructor(config) {
         super();
 
@@ -25,23 +31,43 @@ class GitHubStorage extends BaseStorage {
         });
     }
 
+    /**
+     * Not implemented yet.
+     * @todo Find a way to get the blob SHA of the target file
+     * @returns {Promise.<*>}
+     */
     delete() {
-        // TODO: Find a way to get the blob SHA of the target file
         return Promise.reject("Not implemented");
     }
 
+    /**
+     * @param {string} filename
+     * @param {string} targetDir
+     * @returns {Promise}
+     */
     exists(filename, targetDir) {
         const filepath = path.join(targetDir || this.getTargetDir(), filename);
+
         return request(this.getUrl(filepath))
             .then(res => res.statusCode === 200)
             .catch(() => false);
     }
 
+    /**
+     * Doesn't need to be implemented because URLs are used to refer to images.
+     * @param {Object} options
+     */
     read(options) {}
 
+    /**
+     * @param {Object} file
+     * @param {string} targetDir
+     * @returns {Promise}
+     */
     save(file, targetDir) {
         const config = this.config;
         const dir = targetDir || this.getTargetDir();
+
         return Promise.join(this.getUniqueFileName(file, dir), Promise.promisify(fs.readFile)(file.path, "base64"), (filename, data) => {
             return this.client.repos.createFile({
                 owner: config.user,
@@ -56,21 +82,31 @@ class GitHubStorage extends BaseStorage {
             .catch(Promise.reject);
     }
 
+    /**
+     * @returns {function}
+     */
     serve() {
         return (req, res, next) => {
             next();
         };
     }
 
+    /**
+     * @param {string} filename
+     * @returns {string}
+     */
     getUrl(filename) {
         const config = this.config;
-        let url = "https://raw.githubusercontent.com/";
-        url += `${config.user}/${config.repo}/`;
-        url += `${config.branch}/`;
-        url += `${this.getFilepath(filename)}`;
+        let url = isUrl(config.baseUrl) ? config.baseUrl : `https://raw.githubusercontent.com/${config.user}/${config.repo}/${config.branch}`;
+        url = buildUrl(url, {path: this.getFilepath(filename)});
+
         return url;
     }
 
+    /**
+     * @param {string} filename
+     * @returns {string}
+     */
     getFilepath(filename) {
         return removeLeadingSlash(path.join(this.config.destination, filename));
     }
