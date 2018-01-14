@@ -14,6 +14,8 @@ class GitHubStorage extends BaseStorage {
 
         this.client = new GitHub();
         this.config = config;
+        config.branch = config.branch || "master";
+        config.destination = config.destination || "";
 
         this.client.authenticate({
             type: config.type,
@@ -38,14 +40,15 @@ class GitHubStorage extends BaseStorage {
     read(options) {}
 
     save(file, targetDir) {
+        const config = this.config;
         const dir = targetDir || this.getTargetDir();
         return Promise.join(this.getUniqueFileName(file, dir), Promise.promisify(fs.readFile)(file.path, "base64"), (filename, data) => {
             return this.client.repos.createFile({
-                owner: this.config.user,
-                repo: this.config.repo,
-                branch: this.config.branch || "master",
+                owner: config.user,
+                repo: config.repo,
+                branch: config.branch,
                 message: "Add new image",
-                path: removeLeadingSlash(filename),
+                path: this.getFilepath(filename),
                 content: data
             });
         })
@@ -61,7 +64,15 @@ class GitHubStorage extends BaseStorage {
 
     getUrl(filename) {
         const config = this.config;
-        return `https://raw.githubusercontent.com/${config.user}/${config.repo}/${config.branch || "master"}/${removeLeadingSlash(filename)}`;
+        let url = "https://raw.githubusercontent.com/";
+        url += `${config.user}/${config.repo}/`;
+        url += `${config.branch}/`;
+        url += `${this.getFilepath(filename)}`;
+        return url;
+    }
+
+    getFilepath(filename) {
+        return removeLeadingSlash(path.join(this.config.destination, filename));
     }
 }
 

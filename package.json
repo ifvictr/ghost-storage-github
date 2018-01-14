@@ -27,7 +27,7 @@
     "dependencies": {
         "bluebird": "^3.5.0",
         "ghost-storage-base": "0.0.1",
-        "github": "^9.2.0",
+        "github": "^13.1.0",
         "remove-leading-slash": "^1.0.1",
         "request": "^2.83.0"
     }
