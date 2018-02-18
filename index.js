@@ -8,6 +8,7 @@ const path = require("path");
 
 const buildUrl = require("build-url");
 const isUrl = require("is-url");
+const readFile = Promise.promisify(fs.readFile);
 const removeLeadingSlash = require("remove-leading-slash");
 const request = Promise.promisify(require("request"));
 
@@ -49,7 +50,7 @@ class GitHubStorage extends BaseStorage {
         const {branch, repo, user} = this.config;
         const dir = targetDir || this.getTargetDir();
 
-        return Promise.join(this.getUniqueFileName(file, dir), Promise.promisify(fs.readFile)(file.path, "base64"), (filename, data) => {
+        return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, "base64"), (filename, data) => {
             return this.client.repos.createFile({
                 owner: user,
                 repo: repo,
