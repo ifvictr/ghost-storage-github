@@ -65,14 +65,14 @@ class GitHubStorage extends BaseStorage {
      * @returns {Promise}
      */
     save(file, targetDir) {
-        const config = this.config;
+        const {branch, repo, user} = this.config;
         const dir = targetDir || this.getTargetDir();
 
         return Promise.join(this.getUniqueFileName(file, dir), Promise.promisify(fs.readFile)(file.path, "base64"), (filename, data) => {
             return this.client.repos.createFile({
-                owner: config.user,
-                repo: config.repo,
-                branch: config.branch,
+                owner: user,
+                repo: repo,
+                branch: branch,
                 message: "Add new image",
                 path: this.getFilepath(filename),
                 content: data
@@ -96,8 +96,8 @@ class GitHubStorage extends BaseStorage {
      * @returns {string}
      */
     getUrl(filename) {
-        const config = this.config;
-        let url = isUrl(config.baseUrl) ? config.baseUrl : `https://raw.githubusercontent.com/${config.user}/${config.repo}/${config.branch}`;
+        const {baseUrl, branch, repo, user} = this.config;
+        let url = isUrl(baseUrl) ? baseUrl : `https://raw.githubusercontent.com/${user}/${repo}/${branch}`;
         url = buildUrl(url, {path: this.getFilepath(filename)});
 
         return url;
