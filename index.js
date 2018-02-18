@@ -12,9 +12,6 @@ const removeLeadingSlash = require("remove-leading-slash");
 const request = Promise.promisify(require("request"));
 
 class GitHubStorage extends BaseStorage {
-    /**
-     * @param {Object} config
-     */
     constructor(config) {
         super();
 
@@ -31,20 +28,11 @@ class GitHubStorage extends BaseStorage {
         });
     }
 
-    /**
-     * Not implemented yet.
-     * @todo Find a way to get the blob SHA of the target file
-     * @returns {Promise.<*>}
-     */
     delete() {
+        // TODO: Find a way to get the blob SHA of the target file
         return Promise.reject("Not implemented");
     }
 
-    /**
-     * @param {string} filename
-     * @param {string} targetDir
-     * @returns {Promise}
-     */
     exists(filename, targetDir) {
         const filepath = path.join(targetDir || this.getTargetDir(), filename);
 
@@ -53,17 +41,10 @@ class GitHubStorage extends BaseStorage {
             .catch(() => false);
     }
 
-    /**
-     * Doesn't need to be implemented because URLs are used to refer to images.
-     * @param {Object} options
-     */
-    read(options) {}
+    read(options) {
+        // Not needed because absolute URLS are already used to link to the images
+    }
 
-    /**
-     * @param {Object} file
-     * @param {string} targetDir
-     * @returns {Promise}
-     */
     save(file, targetDir) {
         const {branch, repo, user} = this.config;
         const dir = targetDir || this.getTargetDir();
@@ -82,19 +63,12 @@ class GitHubStorage extends BaseStorage {
             .catch(Promise.reject);
     }
 
-    /**
-     * @returns {function}
-     */
     serve() {
         return (req, res, next) => {
             next();
         };
     }
 
-    /**
-     * @param {string} filename
-     * @returns {string}
-     */
     getUrl(filename) {
         const {baseUrl, branch, repo, user} = this.config;
         let url = isUrl(baseUrl) ? baseUrl : `https://raw.githubusercontent.com/${user}/${repo}/${branch}`;
@@ -103,10 +77,6 @@ class GitHubStorage extends BaseStorage {
         return url;
     }
 
-    /**
-     * @param {string} filename
-     * @returns {string}
-     */
     getFilepath(filename) {
         return removeLeadingSlash(path.join(this.config.destination, filename));
     }
