@@ -63,7 +63,7 @@ class GitHubStorage extends BaseStorage {
         .then(res => {
             let url = res.data.content.download_url;
             if(isUrl(baseUrl)) {
-                url = this.getUrl(res.path);
+                url = this.getUrl(res.data.content.path);
             }
             return url;
         })
