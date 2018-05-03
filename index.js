@@ -2,7 +2,7 @@
 
 const Promise = require("bluebird");
 const BaseStorage = require("ghost-storage-base");
-const GitHub = require("github");
+const Octokit = require("@octokit/rest");
 const fs = require("fs");
 const path = require("path");
 
@@ -16,7 +16,7 @@ class GitHubStorage extends BaseStorage {
     constructor(config) {
         super();
 
-        this.client = new GitHub();
+        this.client = new Octokit();
         this.config = config;
         config.branch = config.branch || "master";
         config.destination = config.destination || "";
@@ -60,8 +60,11 @@ class GitHubStorage extends BaseStorage {
                 content: data
             });
         })
-            .then(res => res.data.content.download_url)
-            .catch(Promise.reject);
+        .then(res => {
+            console.log(res.data.content.download_url);
+            return res.data.content.download_url;
+        })
+        .catch(Promise.reject);
     }
 
     serve() {
