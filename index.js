@@ -47,7 +47,7 @@ class GitHubStorage extends BaseStorage {
     }
 
     save(file, targetDir) {
-        const {branch, repo, user} = this.config;
+        const {baseUrl, branch, repo, user} = this.config;
         const dir = targetDir || this.getTargetDir();
 
         return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, "base64"), (filename, data) => {
@@ -61,7 +61,7 @@ class GitHubStorage extends BaseStorage {
             });
         })
         .then(res => {
-            console.log(res.data.content.download_url);
+            console.log(res);
             return res.data.content.download_url;
         })
         .catch(Promise.reject);
