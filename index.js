@@ -126,6 +126,24 @@ class GitHubStorage extends BaseStorage {
         const prefix = new Array(length).join('0')
         return (prefix + num).substr(-length)
     }
+
+    /**
+     * ensure filename is unique
+     */
+    unique (pathObj, i) {
+        const originalName = pathObj.name
+
+        if (i !== undefined) {
+        pathObj.name += '-' + i
+        pathObj.base = pathObj.name + pathObj.ext
+        }
+
+        return this.exists(pathObj.base, pathObj.dir).then(exists => {
+        if (!exists) return path.format(pathObj)
+        pathObj.name = originalName
+        return this.unique(pathObj, i + 1 || 1)
+        })
+    }
 }
 
 module.exports = GitHubStorage;
