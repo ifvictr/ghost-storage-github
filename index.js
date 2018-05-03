@@ -2,9 +2,10 @@
 
 const Promise = require("bluebird");
 const BaseStorage = require("ghost-storage-base");
-const GitHub = require("github");
-const fs = require("fs");
+const Octokit = require("@octokit/rest");
+const fs = require("fs-extra");
 const path = require("path");
+const uuid = require('uuid');
 
 const buildUrl = require("build-url");
 const isUrl = require("is-url");
@@ -16,7 +17,7 @@ class GitHubStorage extends BaseStorage {
     constructor(config) {
         super();
 
-        this.client = new GitHub();
+        this.client = new Octokit();
         this.config = config;
         config.branch = config.branch || "master";
         config.destination = config.destination || "";
@@ -27,6 +28,37 @@ class GitHubStorage extends BaseStorage {
             password: config.password,
             token: config.token,
         });
+
+        // Local storage path
+        this.localPath = config.path ? config.path : "/";
+    }
+    
+    getFilename (image) {
+        const date = new Date()
+        const timestamp = date.getTime()
+        const year = this.padLeft(date.getYear() + 1900, 4)
+        const month = this.padLeft(date.getMonth() + 1, 2)
+        const day = this.padLeft(date.getDate(), 2)
+    
+        const random = Math.random().toString().substr(-8)
+    
+        const ext = path.extname(image.name)
+        const name = path.basename(image.name, ext)
+    
+        const pathname = this.config.format.toLowerCase()
+          .replace(/{timestamp}/g, timestamp)
+          .replace(/{yyyy}/g, year)
+          .replace(/{mm}/g, month)
+          .replace(/{dd}/g, day)
+          .replace(/{name}/g, name)
+          .replace(/{ext}/g, ext)
+          .replace(/{random}/g, random)
+          .replace(/{uuid}/g, uuid())
+    
+        const filename = path.join(this.localPath, pathname)
+        const pathObj = path.parse(filename)
+    
+        return fs.mkdirs(pathObj.dir).then(() => this.unique(pathObj))
     }
 
     delete() {
@@ -47,10 +79,10 @@ class GitHubStorage extends BaseStorage {
     }
 
     save(file, targetDir) {
-        const {branch, repo, user} = this.config;
+        const {baseUrl, branch, repo, user} = this.config;
         const dir = targetDir || this.getTargetDir();
 
-        return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, "base64"), (filename, data) => {
+        return Promise.join(this.getFilename(file), readFile(file.path, "base64"), (filename, data) => {
             return this.client.repos.createFile({
                 owner: user,
                 repo: repo,
@@ -60,8 +92,14 @@ class GitHubStorage extends BaseStorage {
                 content: data
             });
         })
-            .then(res => res.data.content.download_url)
-            .catch(Promise.reject);
+        .then(res => {
+            let url = res.data.content.download_url;
+            if(isUrl(baseUrl)) {
+                url = this.getUrl(res.data.content.path);
+            }
+            return url;
+        })
+        .catch(Promise.reject);
     }
 
     serve() {
@@ -80,6 +118,29 @@ class GitHubStorage extends BaseStorage {
 
     getFilepath(filename) {
         return removeLeadingSlash(path.join(this.config.destination, filename));
+    }
+
+    padLeft (num, length) {
+        const prefix = new Array(length).join('0')
+        return (prefix + num).substr(-length)
+    }
+
+    /**
+     * ensure filename is unique
+     */
+    unique (pathObj, i) {
+        const originalName = pathObj.name
+
+        if (i !== undefined) {
+        pathObj.name += '-' + i
+        pathObj.base = pathObj.name + pathObj.ext
+        }
+
+        return this.exists(pathObj.base, pathObj.dir).then(exists => {
+        if (!exists) return path.format(pathObj)
+        pathObj.name = originalName
+        return this.unique(pathObj, i + 1 || 1)
+        })
     }
 }
 

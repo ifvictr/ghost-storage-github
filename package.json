@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ifvictr/ghost-github.git"
+        "url": "git+https://github.com/2J/ghost-github.git"
     },
     "keywords": [
         "adapter",
@@ -18,19 +18,21 @@
         "storage",
         "store"
     ],
-    "author": "Victor Truong <me@ifvictr.com> (https://ifvictr.com)",
+    "author": "Justin Jeong <jj@jj.ai> (https://jj.ai)",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/ifvictr/ghost-github/issues"
+        "url": "https://github.com/2J/ghost-github/issues"
     },
-    "homepage": "https://github.com/ifvictr/ghost-github#readme",
+    "homepage": "https://github.com/2J/ghost-github#readme",
     "dependencies": {
+        "@octokit/rest": "^15.2.7",
         "bluebird": "^3.5.0",
         "build-url": "^1.0.10",
-        "ghost-storage-base": "0.0.1",
-        "github": "^13.1.0",
+        "fs-extra": "^6.0.0",
+        "ghost-storage-base": "0.0.3",
         "is-url": "^1.2.2",
         "remove-leading-slash": "^1.0.1",
-        "request": "^2.83.0"
+        "request": "^2.83.0",
+        "uuid": "^3.2.1"
     }
 }
