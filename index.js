@@ -5,6 +5,7 @@ const BaseStorage = require("ghost-storage-base");
 const Octokit = require("@octokit/rest");
 const fs = require("fs");
 const path = require("path");
+const uuid = require('uuid');
 
 const buildUrl = require("build-url");
 const isUrl = require("is-url");
@@ -27,6 +28,39 @@ class GitHubStorage extends BaseStorage {
             password: config.password,
             token: config.token,
         });
+
+        // Local storage path
+        this.localPath = config.path
+            ? path.resolve(config.path)
+            : path.join(__dirname, '../../../../images/')
+    }
+    
+    getFilename (image) {
+        const date = new Date()
+        const timestamp = date.getTime()
+        const year = this.padLeft(date.getYear() + 1900, 4)
+        const month = this.padLeft(date.getMonth() + 1, 2)
+        const day = this.padLeft(date.getDate(), 2)
+    
+        const random = Math.random().toString().substr(-8)
+    
+        const ext = path.extname(image.name)
+        const name = path.basename(image.name, ext)
+    
+        const pathname = this.config.format.toLowerCase()
+          .replace(/{timestamp}/g, timestamp)
+          .replace(/{yyyy}/g, year)
+          .replace(/{mm}/g, month)
+          .replace(/{dd}/g, day)
+          .replace(/{name}/g, name)
+          .replace(/{ext}/g, ext)
+          .replace(/{random}/g, random)
+          .replace(/{uuid}/g, uuid())
+    
+        const filename = path.join(this.localPath, pathname)
+        const pathObj = path.parse(filename)
+    
+        return fs.mkdirs(pathObj.dir).then(() => this.unique(pathObj))
     }
 
     delete() {
@@ -50,7 +84,7 @@ class GitHubStorage extends BaseStorage {
         const {baseUrl, branch, repo, user} = this.config;
         const dir = targetDir || this.getTargetDir();
 
-        return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, "base64"), (filename, data) => {
+        return Promise.join(this.getFilename(file), readFile(file.path, "base64"), (filename, data) => {
             return this.client.repos.createFile({
                 owner: user,
                 repo: repo,

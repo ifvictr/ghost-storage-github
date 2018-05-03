@@ -31,6 +31,7 @@
         "ghost-storage-base": "0.0.3",
         "is-url": "^1.2.2",
         "remove-leading-slash": "^1.0.1",
-        "request": "^2.83.0"
+        "request": "^2.83.0",
+        "uuid": "^3.2.1"
     }
 }
