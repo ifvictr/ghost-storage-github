@@ -3,7 +3,7 @@
 const Promise = require("bluebird");
 const BaseStorage = require("ghost-storage-base");
 const Octokit = require("@octokit/rest");
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const uuid = require('uuid');
 

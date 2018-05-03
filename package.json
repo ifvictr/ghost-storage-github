@@ -28,6 +28,7 @@
         "@octokit/rest": "^15.2.7",
         "bluebird": "^3.5.0",
         "build-url": "^1.0.10",
+        "fs-extra": "^6.0.0",
         "ghost-storage-base": "0.0.3",
         "is-url": "^1.2.2",
         "remove-leading-slash": "^1.0.1",
