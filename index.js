@@ -30,9 +30,7 @@ class GitHubStorage extends BaseStorage {
         });
 
         // Local storage path
-        this.localPath = config.path
-            ? path.resolve(config.path)
-            : path.join(__dirname, '../../../../images/')
+        this.localPath = config.path ? config.path : "/";
     }
     
     getFilename (image) {
