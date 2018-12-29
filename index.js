@@ -11,6 +11,7 @@ const isUrl = require("is-url");
 const readFile = Promise.promisify(fs.readFile);
 const removeLeadingSlash = require("remove-leading-slash");
 const request = Promise.promisify(require("request"));
+const https = require("https");
 
 class GitHubStorage extends BaseStorage {
     constructor(config) {
@@ -43,7 +44,20 @@ class GitHubStorage extends BaseStorage {
     }
 
     read(options) {
-        // Not needed because absolute URLS are already used to link to the images
+        options = options || {};
+        options.path = (options.path || '').replace(/\/$|\\$/, '');
+        var targetPath = this.storagePath ? path.join(this.storagePath, options.path) : options.path;
+
+        return new Promise(function (resolve, reject) {
+            https.get(targetPath, function (res) {
+                var data = [];
+                res.on('data', function (chunk) {
+                    data.push(chunk);
+                }).on('end', function () {
+                    resolve(Buffer.concat(data));
+                });
+            });
+        });
     }
 
     save(file, targetDir) {
