@@ -93,7 +93,8 @@ class GitHubStorage extends BaseStorage {
     }
 
     getFilepath(filename) {
-        return removeLeadingSlash(path.join(this.config.destination, filename));
+        const filePath = path.join(this.config.destination, filename).replace(/\\/g, '/')
+        return removeLeadingSlash(filePath);
     }
 }
 
