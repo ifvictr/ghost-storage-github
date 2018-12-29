@@ -94,7 +94,9 @@ class GitHubStorage extends BaseStorage {
     }
 
     getFilepath(filename) {
-        return removeLeadingSlash(path.join(this.config.destination, filename));
+        // 181229 Fixed resize image path error from ghost 2.9.x.
+        const filePath = path.join(this.config.destination, filename).replace(/\\/g, '/')
+        return removeLeadingSlash(filePath);
     }
 }
 
