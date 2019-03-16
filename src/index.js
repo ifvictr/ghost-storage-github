@@ -1,31 +1,32 @@
-'use strict'
+import Promise from 'bluebird'
+import buildUrl from 'build-url'
+import fs from 'fs'
+import BaseStorage from 'ghost-storage-base'
+import GitHub from 'github'
+import isUrl from 'is-url'
+import path from 'path'
+import removeLeadingSlash from 'remove-leading-slash'
+import _request from 'request'
 
-const Promise = require('bluebird')
-const BaseStorage = require('ghost-storage-base')
-const GitHub = require('github')
-const fs = require('fs')
-const path = require('path')
-
-const buildUrl = require('build-url')
-const isUrl = require('is-url')
 const readFile = Promise.promisify(fs.readFile)
-const removeLeadingSlash = require('remove-leading-slash')
-const request = Promise.promisify(require('request'))
+const request = Promise.promisify(_request)
 
 class GitHubStorage extends BaseStorage {
     constructor(config) {
         super()
 
         this.client = new GitHub()
-        this.config = config
-        config.branch = config.branch || 'master'
-        config.destination = config.destination || ''
+        this.config = {
+            branch: 'master',
+            destination: '',
+            ...config
+        }
 
         this.client.authenticate({
-            type: config.type,
-            username: config.user,
-            password: config.password,
-            token: config.token,
+            type: this.config.type,
+            username: this.config.user,
+            password: this.config.password,
+            token: this.config.token,
         })
     }
 
@@ -85,4 +86,4 @@ class GitHubStorage extends BaseStorage {
     }
 }
 
-module.exports = GitHubStorage
+export default GitHubStorage
