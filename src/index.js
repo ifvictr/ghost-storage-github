@@ -1,7 +1,7 @@
+import Octokit from '@octokit/rest'
 import Promise from 'bluebird'
 import fs from 'fs'
 import BaseStorage from 'ghost-storage-base'
-import GitHub from 'github'
 import isUrl from 'is-url'
 import path from 'path'
 import { URL } from 'url'
@@ -37,7 +37,7 @@ class GitHubStorage extends BaseStorage {
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.user}/${this.repo}/${this.branch}`
-        this.client = new GitHub()
+        this.client = new Octokit()
 
         this.client.authenticate({
             type: this.type,

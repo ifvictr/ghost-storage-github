@@ -31,9 +31,9 @@
     "node": ">=7.0.0"
   },
   "dependencies": {
+    "@octokit/rest": "^16.20.0",
     "bluebird": "^3.5.0",
     "ghost-storage-base": "0.0.1",
-    "github": "^13.1.0",
     "is-url": "^1.2.2"
   },
   "devDependencies": {
