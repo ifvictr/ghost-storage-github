@@ -4,12 +4,10 @@ import BaseStorage from 'ghost-storage-base'
 import GitHub from 'github'
 import isUrl from 'is-url'
 import path from 'path'
-import _request from 'request'
 import { URL } from 'url'
-import { removeLeadingSlash } from './utils'
+import { isWorkingUrl, removeLeadingSlash } from './utils'
 
 const readFile = Promise.promisify(fs.readFile)
-const request = Promise.promisify(_request)
 
 const RAW_GITHUB_URL = 'https://raw.githubusercontent.com'
 
@@ -56,10 +54,7 @@ class GitHubStorage extends BaseStorage {
 
     exists(filename, targetDir) {
         const filepath = path.join(targetDir || this.getTargetDir(), filename)
-
-        return request(this.getUrl(filepath))
-            .then(res => res.statusCode === 200)
-            .catch(() => false)
+        return isWorkingUrl(this.getUrl(filepath))
     }
 
     read(options) {

@@ -34,8 +34,7 @@
     "bluebird": "^3.5.0",
     "ghost-storage-base": "0.0.1",
     "github": "^13.1.0",
-    "is-url": "^1.2.2",
-    "request": "^2.83.0"
+    "is-url": "^1.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
