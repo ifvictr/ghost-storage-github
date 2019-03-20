@@ -27,6 +27,9 @@
     "url": "https://github.com/ifvictr/ghost-github/issues"
   },
   "homepage": "https://github.com/ifvictr/ghost-github#readme",
+  "engines": {
+    "node": "^7.0.0"
+  },
   "dependencies": {
     "bluebird": "^3.5.0",
     "ghost-storage-base": "0.0.1",

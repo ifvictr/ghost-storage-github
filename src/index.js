@@ -5,6 +5,7 @@ import GitHub from 'github'
 import isUrl from 'is-url'
 import path from 'path'
 import _request from 'request'
+import { URL } from 'url'
 import { removeLeadingSlash } from './utils'
 
 const readFile = Promise.promisify(fs.readFile)
