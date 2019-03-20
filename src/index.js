@@ -10,22 +10,41 @@ import _request from 'request'
 const readFile = Promise.promisify(fs.readFile)
 const request = Promise.promisify(_request)
 
+const RAW_GITHUB_URL = 'https://raw.githubusercontent.com'
+
 class GitHubStorage extends BaseStorage {
     constructor(config) {
         super()
 
+        const {
+            baseUrl,
+            branch,
+            destination,
+            password,
+            repo,
+            token,
+            type,
+            user,
+        } = config
+
+        this.branch = branch
+        this.destination = destination
+        this.password = password
+        this.repo = repo
+        this.token = token
+        this.type = type || 'token'
+        this.user = user
+
+        this.baseUrl = isUrl(baseUrl)
+            ? baseUrl
+            : `${RAW_GITHUB_URL}/${this.user}/${this.repo}/${this.branch}`
         this.client = new GitHub()
-        this.config = {
-            branch: 'master',
-            destination: '',
-            ...config
-        }
 
         this.client.authenticate({
-            type: this.config.type,
-            username: this.config.user,
-            password: this.config.password,
-            token: this.config.token,
+            type: this.type,
+            username: this.user,
+            password: this.password,
+            token: this.token,
         })
     }
 
@@ -47,14 +66,13 @@ class GitHubStorage extends BaseStorage {
     }
 
     save(file, targetDir) {
-        const { branch, repo, user } = this.config
         const dir = targetDir || this.getTargetDir()
 
         return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, 'base64'), (filename, data) => {
             return this.client.repos.createFile({
-                owner: user,
-                repo: repo,
-                branch: branch,
+                owner: this.user,
+                repo: this.repo,
+                branch: this.branch,
                 message: 'Add new image',
                 path: this.getFilepath(filename),
                 content: data
@@ -71,19 +89,14 @@ class GitHubStorage extends BaseStorage {
     }
 
     getUrl(filename) {
-        const { baseUrl, branch, repo, user } = this.config
-        const rootUrl = isUrl(baseUrl)
-            ? baseUrl
-            : `https://raw.githubusercontent.com/${user}/${repo}/${branch}`
-
-        const url = new URL(rootUrl);
+        const url = new URL(this.baseUrl);
         url.pathname = this.getFilepath(filename);
 
         return url.toString()
     }
 
     getFilepath(filename) {
-        return removeLeadingSlash(path.join(this.config.destination, filename))
+        return removeLeadingSlash(path.join(this.destination, filename))
     }
 }
 
