@@ -4,7 +4,7 @@
   "description": "Storage on GitHub for Ghost.",
   "main": "./build/index.js",
   "scripts": {
-    "build": "yarn clean && babel ./src/index.js --out-file ./build/index.js",
+    "build": "yarn clean && babel ./src --out-dir ./build",
     "clean": "rm -rf build && mkdir build",
     "prepublish": "yarn build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -32,7 +32,6 @@
     "ghost-storage-base": "0.0.1",
     "github": "^13.1.0",
     "is-url": "^1.2.2",
-    "remove-leading-slash": "^1.0.1",
     "request": "^2.83.0"
   },
   "devDependencies": {

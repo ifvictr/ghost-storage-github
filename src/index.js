@@ -4,8 +4,8 @@ import BaseStorage from 'ghost-storage-base'
 import GitHub from 'github'
 import isUrl from 'is-url'
 import path from 'path'
-import removeLeadingSlash from 'remove-leading-slash'
 import _request from 'request'
+import { removeLeadingSlash } from './utils'
 
 const readFile = Promise.promisify(fs.readFile)
 const request = Promise.promisify(_request)

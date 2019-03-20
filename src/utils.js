@@ -1,0 +1,1 @@
+export const removeLeadingSlash = str => str.replace(/^\/+/, '')

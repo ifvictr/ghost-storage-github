@@ -2022,10 +2022,6 @@ regjsparser@^0.6.0:
   dependencies:
     jsesc "~0.5.0"
 
-remove-leading-slash@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/remove-leading-slash/-/remove-leading-slash-1.0.1.tgz#df9e6d03a2dbbe361b397a912fdd9bdc740e90a8"
-
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
