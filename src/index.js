@@ -25,7 +25,7 @@ class GitHubStorage extends BaseStorage {
         } = config
 
         this.branch = branch || 'master'
-        this.destination = destination
+        this.destination = destination || '/'
         this.owner = owner
         this.repo = repo
 
