@@ -1,5 +1,4 @@
 import Promise from 'bluebird'
-import buildUrl from 'build-url'
 import fs from 'fs'
 import BaseStorage from 'ghost-storage-base'
 import GitHub from 'github'
@@ -73,12 +72,14 @@ class GitHubStorage extends BaseStorage {
 
     getUrl(filename) {
         const { baseUrl, branch, repo, user } = this.config
-        let url = isUrl(baseUrl)
+        const rootUrl = isUrl(baseUrl)
             ? baseUrl
             : `https://raw.githubusercontent.com/${user}/${repo}/${branch}`
-        url = buildUrl(url, { path: this.getFilepath(filename) })
 
-        return url
+        const url = new URL(rootUrl);
+        url.pathname = this.getFilepath(filename);
+
+        return url.toString()
     }
 
     getFilepath(filename) {

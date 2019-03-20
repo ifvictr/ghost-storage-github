@@ -29,7 +29,6 @@
   "homepage": "https://github.com/ifvictr/ghost-github#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "build-url": "^1.0.10",
     "ghost-storage-base": "0.0.1",
     "github": "^13.1.0",
     "is-url": "^1.2.2",
