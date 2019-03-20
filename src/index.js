@@ -59,12 +59,12 @@ class GitHubStorage extends BaseStorage {
                 owner: this.owner,
                 repo: this.repo,
                 branch: this.branch,
-                message: 'Add new image',
+                message: `Create ${filename}`,
                 path: this.getFilepath(filename),
                 content: data
             })
         })
-            .then(res => res.data.content.download_url)
+            .then(res => this.getUrl(res.data.content.path))
             .catch(Promise.reject)
     }
 
