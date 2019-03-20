@@ -4,7 +4,7 @@ Storage on GitHub for Ghost. Good for blogs hosted on platforms without a persis
 
 ## Installation
 
-```
+```bash
 cd /path/to/your/ghost/installation
 npm install ghost-github
 mkdir content/storage
@@ -13,26 +13,24 @@ cp -r node_modules/ghost-github content/storage/ghost-github
 
 ## Usage
 
-Add the following to your configuration file depending on the version of Ghost you have. Replace values accordingly.
-
-### < 1.0.0
+Add the following to your configuration file and modify it accordingly.
 
 ```js
 storage: {
-    active: "ghost-github",
-    "ghost-github": {
-        // Required: Username of the repo's owner
-        owner: "[my username here]",
-        // Either: Personal access token (for token and oauth)
-        token: "[my token here]",
-        // Required: Name of repo you want to save files to
-        repo: "ghost-assets",
-        // Optional: Will save to branch of repo, defaults to master
-        branch: "gh-pages",
-        // Optional: Will place the image in the specified directory rather than root
-        destination: "",
-        // Optional: Will use base URL for image requests
-        baseUrl: "https://cdn.example.com"
+    active: 'ghost-github',
+    'ghost-github': {
+        // Personal access token (required)
+        token: '[my token here]',
+        // Username of the repo's owner (required)
+        owner: '[my username here]',
+        // Name of repo you want to save files to (required)
+        repo: 'ghost-assets',
+        // Branch you want to save to. If omitted, it will default to master (optional)
+        branch: 'master',
+        // The subdirectory you want all images to go into. If omitted, it will default to the root directory (optional)
+        destination: '',
+        // Will use base URL for image requests (optional)
+        baseUrl: 'https://cdn.example.com'
     }
 }
 ```
@@ -52,12 +50,6 @@ Your token or password might be incorrect. You should double-check your configur
 ### I'm getting a "Not found" error. What should I do?
 
 Make sure the repository you specified exists. Also, check to make sure the branch (if specified) exists in the repo.
-
-## Contributors
-
-Without these awesome people, I might've never been able to finish this.
-- [@acburdine](https://github.com/acburdine)
-- [@shmishtopher](https://github.com/shmishtopher)
 
 ## License
 
