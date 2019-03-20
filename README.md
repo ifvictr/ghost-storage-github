@@ -21,11 +21,8 @@ Add the following to your configuration file depending on the version of Ghost y
 storage: {
     active: "ghost-github",
     "ghost-github": {
-        // Required: Can either be basic, oauth, or token
-        type: "oauth",
-        user: "[my username here]",
-        // Either: GitHub login credentials (basic only)
-        password: "[my password here]",
+        // Required: Username of the repo's owner
+        owner: "[my username here]",
         // Either: Personal access token (for token and oauth)
         token: "[my token here]",
         // Required: Name of repo you want to save files to
@@ -38,25 +35,6 @@ storage: {
         baseUrl: "https://cdn.example.com"
     }
 }
-```
-
-### >= 1.0.0
-
-Options from above also apply here except for the formatting.
-
-```json
-"storage": {
-    "active": "ghost-github",
-    "ghost-github": {
-        "type": "...",
-        "user": "...",
-        "password": "...",
-        "token": "...",
-        "repo": "...",
-        "branch": "..."
-    }
-}
-
 ```
 
 ## Questions

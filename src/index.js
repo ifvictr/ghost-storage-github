@@ -19,31 +19,21 @@ class GitHubStorage extends BaseStorage {
             baseUrl,
             branch,
             destination,
-            password,
+            owner,
             repo,
-            token,
-            type,
-            user,
+            token
         } = config
 
         this.branch = branch || 'master'
         this.destination = destination
-        this.password = password
+        this.owner = owner
         this.repo = repo
-        this.token = token
-        this.type = type || 'token'
-        this.user = user
 
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
-            : `${RAW_GITHUB_URL}/${this.user}/${this.repo}/${this.branch}`
-        this.client = new Octokit()
-
-        this.client.authenticate({
-            type: this.type,
-            username: this.user,
-            password: this.password,
-            token: this.token,
+            : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
+        this.client = new Octokit({
+            auth: `token ${token}`
         })
     }
 
@@ -66,7 +56,7 @@ class GitHubStorage extends BaseStorage {
 
         return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, 'base64'), (filename, data) => {
             return this.client.repos.createFile({
-                owner: this.user,
+                owner: this.owner,
                 repo: this.repo,
                 branch: this.branch,
                 message: 'Add new image',
