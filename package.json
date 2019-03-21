@@ -2,17 +2,6 @@
   "name": "ghost-github",
   "version": "1.0.2",
   "description": "Storage on GitHub for Ghost.",
-  "main": "./build/index.js",
-  "scripts": {
-    "build": "yarn clean && babel ./src --out-dir ./build",
-    "clean": "rm -rf build && mkdir build",
-    "prepublish": "yarn build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ifvictr/ghost-github.git"
-  },
   "keywords": [
     "adapter",
     "blog",
@@ -21,14 +10,22 @@
     "storage",
     "store"
   ],
-  "author": "Victor Truong <me@ifvictr.com> (https://ifvictr.com)",
-  "license": "MIT",
+  "homepage": "https://github.com/ifvictr/ghost-github#readme",
   "bugs": {
     "url": "https://github.com/ifvictr/ghost-github/issues"
   },
-  "homepage": "https://github.com/ifvictr/ghost-github#readme",
-  "engines": {
-    "node": ">=7.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifvictr/ghost-github.git"
+  },
+  "license": "MIT",
+  "author": "Victor Truong <me@ifvictr.com> (https://ifvictr.com)",
+  "main": "./build/index.js",
+  "scripts": {
+    "build": "yarn clean && babel ./src --out-dir ./build",
+    "clean": "rm -rf build && mkdir build",
+    "prepublish": "yarn build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@octokit/rest": "^16.20.0",
@@ -40,5 +37,8 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4"
+  },
+  "engines": {
+    "node": ">=7.0.0"
   }
 }
