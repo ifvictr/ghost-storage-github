@@ -76,8 +76,8 @@ class GitHubStorage extends BaseStorage {
     }
 
     getUrl(filename) {
-        const url = new URL(this.baseUrl);
-        url.pathname = this.getFilepath(filename);
+        const url = new URL(this.baseUrl)
+        url.pathname += `/${this.getFilepath(filename)}`
 
         return url.toString()
     }
