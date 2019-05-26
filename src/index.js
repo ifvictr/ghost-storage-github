@@ -5,7 +5,7 @@ import BaseStorage from 'ghost-storage-base'
 import isUrl from 'is-url'
 import path from 'path'
 import { URL } from 'url'
-import { getProtocolAdapter, isWorkingUrl, removeLeadingSlashes, removeTrailingSlashes } from './utils'
+import * as utils from './utils'
 
 const readFile = Promise.promisify(fs.readFile)
 
@@ -27,7 +27,7 @@ class GitHubStorage extends BaseStorage {
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
 
-        const baseUrl = removeTrailingSlashes(config.baseUrl || process.env.GHOST_GITHUB_BASE_URL)
+        const baseUrl = utils.removeTrailingSlashes(config.baseUrl || process.env.GHOST_GITHUB_BASE_URL)
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
@@ -43,12 +43,12 @@ class GitHubStorage extends BaseStorage {
 
     exists(filename, targetDir) {
         const filepath = path.join(targetDir || this.getTargetDir(), filename)
-        return isWorkingUrl(this.getUrl(filepath))
+        return utils.isWorkingUrl(this.getUrl(filepath))
     }
 
     read(options) {
         return new Promise((resolve, reject) => {
-            const req = getProtocolAdapter(options.path).get(options.path, res => {
+            const req = utils.getProtocolAdapter(options.path).get(options.path, res => {
                 const data = []
                 res.on('data', chunk => {
                     data.push(chunk)
@@ -96,7 +96,7 @@ class GitHubStorage extends BaseStorage {
     }
 
     getFilepath(filename) {
-        return removeLeadingSlashes(path.join(this.destination, filename))
+        return utils.removeLeadingSlashes(path.join(this.destination, filename))
     }
 }
 
