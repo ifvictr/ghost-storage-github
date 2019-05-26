@@ -20,6 +20,6 @@ export const isWorkingUrl = url => new Promise(resolve => {
     req.end()
 })
 
-export const removeLeadingSlash = str => str.replace(/^\/+/, '')
+export const removeLeadingSlashes = str => str.replace(/^\/+/, '')
 
-export const removeTrailingSlash = str => str.replace(/\/+$/, '')
+export const removeTrailingSlashes = str => str.replace(/\/+$/, '')
