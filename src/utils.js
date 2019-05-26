@@ -21,3 +21,5 @@ export const isWorkingUrl = url => new Promise(resolve => {
 })
 
 export const removeLeadingSlash = str => str.replace(/^\/+/, '')
+
+export const removeTrailingSlash = str => str.replace(/\/+$/, '')

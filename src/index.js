@@ -5,7 +5,7 @@ import BaseStorage from 'ghost-storage-base'
 import isUrl from 'is-url'
 import path from 'path'
 import { URL } from 'url'
-import { isWorkingUrl, removeLeadingSlash } from './utils'
+import { isWorkingUrl, removeLeadingSlash, removeTrailingSlash } from './utils'
 
 const readFile = Promise.promisify(fs.readFile)
 
@@ -27,7 +27,7 @@ class GitHubStorage extends BaseStorage {
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
 
-        const baseUrl = config.baseUrl || process.env.GHOST_GITHUB_BASE_URL
+        const baseUrl = removeTrailingSlash(config.baseUrl || process.env.GHOST_GITHUB_BASE_URL)
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
