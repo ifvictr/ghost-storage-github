@@ -3,7 +3,7 @@ import http from 'http'
 import https from 'https'
 import { URL } from 'url'
 
-const getProtocolAdapter = inputUrl => {
+export const getProtocolAdapter = inputUrl => {
     const url = new URL(inputUrl)
     const adapters = {
         'http:': http,

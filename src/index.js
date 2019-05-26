@@ -5,7 +5,7 @@ import BaseStorage from 'ghost-storage-base'
 import isUrl from 'is-url'
 import path from 'path'
 import { URL } from 'url'
-import { isWorkingUrl, removeLeadingSlashes, removeTrailingSlashes } from './utils'
+import { getProtocolAdapter, isWorkingUrl, removeLeadingSlashes, removeTrailingSlashes } from './utils'
 
 const readFile = Promise.promisify(fs.readFile)
 
@@ -47,7 +47,18 @@ class GitHubStorage extends BaseStorage {
     }
 
     read(options) {
-        // Not needed because absolute URLS are already used to link to the images
+        return new Promise((resolve, reject) => {
+            const req = getProtocolAdapter(options.path).get(options.path, res => {
+                const data = []
+                res.on('data', chunk => {
+                    data.push(chunk)
+                })
+                res.on('end', () => {
+                    resolve(Buffer.concat(data))
+                })
+            })
+            req.on('error', reject)
+        })
     }
 
     save(file, targetDir) {
