@@ -16,12 +16,10 @@ class GitHubStorage extends BaseStorage {
         super()
 
         const {
-            baseUrl,
             branch,
             destination,
             owner,
-            repo,
-            token
+            repo
         } = config
 
         this.branch = process.env.GHOST_GITHUB_BRANCH || branch || 'master'
@@ -29,12 +27,12 @@ class GitHubStorage extends BaseStorage {
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
 
-        baseUrl = baseUrl || process.env.GHOST_GITHUB_BASE_URL
+        const baseUrl = config.baseUrl || process.env.GHOST_GITHUB_BASE_URL
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
 
-        token = token || process.env.GHOST_GITHUB_TOKEN
+        const token = config.token || process.env.GHOST_GITHUB_TOKEN
         this.client = new Octokit({ auth: `token ${token}` })
     }
 
