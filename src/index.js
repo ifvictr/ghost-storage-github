@@ -37,7 +37,6 @@ class GitHubStorage extends BaseStorage {
     }
 
     delete() {
-        // TODO: Find a way to get the blob SHA of the target file
         return Promise.reject('Not implemented')
     }
 
