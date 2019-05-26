@@ -53,16 +53,20 @@ class GitHubStorage extends BaseStorage {
     save(file, targetDir) {
         const dir = targetDir || this.getTargetDir()
 
-        return Promise.join(this.getUniqueFileName(file, dir), readFile(file.path, 'base64'), (filename, data) => {
-            return this.client.repos.createFile({
-                owner: this.owner,
-                repo: this.repo,
-                branch: this.branch,
-                message: `Create ${filename}`,
-                path: this.getFilepath(filename),
-                content: data
+        return Promise.all([
+            this.getUniqueFileName(file, dir),
+            readFile(file.path, 'base64')
+        ])
+            .then(([filename, data]) => {
+                return this.client.repos.createFile({
+                    owner: this.owner,
+                    repo: this.repo,
+                    branch: this.branch,
+                    message: `Create ${filename}`,
+                    path: this.getFilepath(filename),
+                    content: data
+                })
             })
-        })
             .then(res => this.getUrl(res.data.content.path))
             .catch(Promise.reject)
     }
