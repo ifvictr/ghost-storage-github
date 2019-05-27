@@ -27,12 +27,12 @@ class GitHubStorage extends BaseStorage {
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
 
-        const baseUrl = utils.removeTrailingSlashes(config.baseUrl || process.env.GHOST_GITHUB_BASE_URL)
+        const baseUrl = utils.removeTrailingSlashes(process.env.GHOST_GITHUB_BASE_URL || config.baseUrl)
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
 
-        const token = config.token || process.env.GHOST_GITHUB_TOKEN
+        const token = process.env.GHOST_GITHUB_TOKEN || config.token
         this.client = new Octokit({ auth: `token ${token}` })
     }
 
