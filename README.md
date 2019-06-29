@@ -15,25 +15,31 @@ cp -r node_modules/ghost-github content/storage/ghost-github
 
 Add the following to your configuration file and modify it accordingly.
 
-```js
-storage: {
-    active: 'ghost-github',
-    'ghost-github': {
-        // Personal access token (required)
-        token: '[my token here]',
-        // Username of the repo's owner (required)
-        owner: '[my username here]',
-        // Name of repo you want to save files to (required)
-        repo: 'ghost-assets',
-        // Branch you want to save to. If omitted, it will default to master (optional)
-        branch: 'master',
-        // The subdirectory you want all images to go into. If omitted, it will default to the root directory (optional)
-        destination: '',
-        // Will use base URL for image requests (optional)
-        baseUrl: 'https://cdn.example.com'
-    }
+```json
+"storage": {
+	"active": "ghost-github",
+	"ghost-github": {
+		"token": "[my token here]",
+		"owner": "[my username here]",
+		"repo": "ghost-assets",
+		"branch": "master",
+		"destination": "",
+		"baseUrl": "https://cdn.example.com"
+	}
 }
 ```
+
+`"token": "[my token here]"` Personal access token (required)
+
+`"owner": "[my username here]"` Username of the repo's owner (required)
+
+`"repo": "ghost-assets"` Name of repo you want to save files to (required)
+
+`"branch": "master"` Branch you want to save to. If omitted, it will default to master (optional)
+
+`"destination: """` The subdirectory you want all images to go into. If omitted, it will default to the root directory (optional)
+
+`"baseUrl": "https://cdn.example.com"` Will use base URL for image requests (optional)
 
 ## Questions
 
