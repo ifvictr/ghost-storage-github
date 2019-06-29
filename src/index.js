@@ -77,7 +77,7 @@ class GitHubStorage extends BaseStorage {
                     content: data
                 })
             })
-            .then(res => this.getUrl(res.data.content.path))
+            .then(res => this.getUrl(res.data.content.name))
             .catch(Promise.reject)
     }
 
