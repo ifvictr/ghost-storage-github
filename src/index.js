@@ -93,12 +93,13 @@ class GitHubStorage extends BaseStorage {
         }
     }
 
-    getUrl(filename) {
+    getUrl(filepath) {
         const url = new URL(this.baseUrl)
-        url.pathname = `${utils.removeTrailingSlashes(url.pathname)}/${this.getFilepath(filename)}`
+        url.pathname = `${utils.removeTrailingSlashes(url.pathname)}/${filepath}`
 
         return url.toString()
     }
+
 
     getFilepath(filename) {
         return utils.removeLeadingSlashes(path.join(this.destination, filename))
