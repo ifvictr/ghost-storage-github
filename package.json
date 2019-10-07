@@ -2,28 +2,20 @@
   "name": "ghost-github",
   "version": "1.0.2",
   "description": "Storage on GitHub for Ghost.",
-  "keywords": [
-    "adapter",
-    "blog",
-    "ghost",
-    "github",
-    "storage",
-    "store"
-  ],
-  "homepage": "https://github.com/ifvictr/ghost-github#readme",
+  "homepage": "https://github.com/ifvictr/ghost-storage-github#readme",
   "bugs": {
-    "url": "https://github.com/ifvictr/ghost-github/issues"
+    "url": "https://github.com/ifvictr/ghost-storage-github/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ifvictr/ghost-github.git"
+    "url": "git+https://github.com/ifvictr/ghost-storage-github.git"
   },
   "license": "MIT",
   "author": "Victor Truong <me@ifvictr.com> (https://ifvictr.com)",
   "main": "./build/index.js",
   "scripts": {
     "build": "yarn clean && babel ./src --out-dir ./build",
-    "clean": "rm -rf build && mkdir build",
+    "clean": "rm -rf ./build && mkdir ./build",
     "prepublish": "yarn build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
