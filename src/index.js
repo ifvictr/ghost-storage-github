@@ -83,7 +83,7 @@ class GitHubStorage extends BaseStorage {
                     return `/${res.data.content.path}`
                 }
                 return this.getUrl(res.data.content.path)
-			})
+            })
             .catch(Promise.reject)
     }
 
@@ -99,7 +99,6 @@ class GitHubStorage extends BaseStorage {
 
         return url.toString()
     }
-
 
     getFilepath(filename) {
         return utils.removeLeadingSlashes(path.join(this.destination, filename))
