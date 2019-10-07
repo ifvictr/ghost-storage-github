@@ -26,6 +26,7 @@ class GitHubStorage extends BaseStorage {
         this.destination = process.env.GHOST_GITHUB_DESTINATION || destination || '/'
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
+        this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
         const baseUrl = utils.removeTrailingSlashes(process.env.GHOST_GITHUB_BASE_URL || config.baseUrl || '')
         this.baseUrl = isUrl(baseUrl)
@@ -77,7 +78,12 @@ class GitHubStorage extends BaseStorage {
                     content: data
                 })
             })
-            .then(res => this.getUrl(res.data.content.path))
+            .then(res => {
+                if (this.useRelativeUrls) {
+                    return `/${res.data.content.path}`
+                }
+                return this.getUrl(res.data.content.path)
+			})
             .catch(Promise.reject)
     }
 
