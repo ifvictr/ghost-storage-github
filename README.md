@@ -24,7 +24,8 @@ Add the following to your configuration file and modify it accordingly.
         "repo": "ghost-assets",
         "branch": "master",
         "destination": "",
-        "baseUrl": "https://cdn.example.com"
+        "baseUrl": "https://cdn.example.com",
+        "useRelativeUrls": false
     }
 }
 ```
@@ -35,6 +36,7 @@ Add the following to your configuration file and modify it accordingly.
 - `branch`: Branch you want to save to. If omitted, it will default to master (optional)
 - `destination`: The subdirectory you want all images to go into. If omitted, it will default to the root directory (optional)
 - `baseUrl`: Will use base URL for image requests (optional)
+- `useRelativeUrls`: Will return the relative URL upon image uploads in posts (optional)
 
 ## Questions
 
