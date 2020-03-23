@@ -7,8 +7,8 @@ Storage on GitHub for Ghost. Good for blogs hosted on platforms without a persis
 ```bash
 cd /path/to/your/ghost/installation
 npm install ghost-github
-mkdir content/storage
-cp -r node_modules/ghost-github content/storage/ghost-github
+mkdir content/adapters/storage
+cp -r node_modules/ghost-github content/adapters/storage/ghost-github
 ```
 
 ## Usage
