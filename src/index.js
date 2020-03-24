@@ -26,13 +26,13 @@ class GitHubStorage extends BaseStorage {
         const token = process.env.GHOST_GITHUB_TOKEN || config.token
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
+        this.branch = process.env.GHOST_GITHUB_BRANCH || branch || 'master'
 
         // Optional config
         const baseUrl = utils.removeTrailingSlashes(process.env.GHOST_GITHUB_BASE_URL || config.baseUrl || '')
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
-        this.branch = process.env.GHOST_GITHUB_BRANCH || branch || 'master'
         this.destination = process.env.GHOST_GITHUB_DESTINATION || destination || '/'
         this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
