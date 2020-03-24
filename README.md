@@ -1,14 +1,14 @@
-# ghost-github
+# ghost-storage-github
 
-Storage on GitHub for Ghost. Good for blogs hosted on platforms without a persistent filesystem (e.g. [Heroku](https://heroku.com)).
+GitHub storage adapter for Ghost. Good for blogs hosted on platforms without a persistent filesystem (e.g. [Heroku](https://heroku.com)).
 
 ## Installation
 
 ```bash
 cd /path/to/your/ghost/installation
-npm install ghost-github
+npm install ghost-storage-github
 mkdir content/adapters/storage
-cp -r node_modules/ghost-github content/adapters/storage/ghost-github
+cp -r node_modules/ghost-storage-github content/adapters/storage/ghost-storage-github
 ```
 
 ## Usage
@@ -17,8 +17,8 @@ Add the following to your configuration file and modify it accordingly.
 
 ```json
 "storage": {
-    "active": "ghost-github",
-    "ghost-github": {
+    "active": "ghost-storage-github",
+    "ghost-storage-github": {
         "token": "[my token here]",
         "owner": "[my username here]",
         "repo": "ghost-assets",
@@ -43,8 +43,8 @@ Add the following to your configuration file and modify it accordingly.
 ### How do I get a personal access token?
 
 1. Create a new personal token [here](https://github.com/settings/tokens/new).
-2. Select 'repo' (which will select everything under `repo`), as **ghost-github** will need access to your repository.
-3. Copy the token that shows up upon successful creation, and paste that into the `token` field of **ghost-github**'s configuration.
+2. Select 'repo' (which will select everything under `repo`), as **ghost-storage-github** will need access to your repository.
+3. Copy the token that shows up upon successful creation, and paste that into the `token` field of **ghost-storage-github**'s configuration.
 
 ### I'm getting a "Bad credentials" error. What should I do?
 
