@@ -20,15 +20,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@octokit/rest": "^16.27.0",
-    "bluebird": "^3.5.5",
-    "ghost-storage-base": "^0.0.3",
+    "@octokit/rest": "^17.1.1",
+    "bluebird": "^3.7.2",
+    "ghost-storage-base": "^0.0.4",
     "is-url": "^1.2.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
     "babel-plugin-add-module-exports": "^1.0.2"
   },
   "engines": {

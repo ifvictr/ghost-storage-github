@@ -1,4 +1,4 @@
-import Octokit from '@octokit/rest'
+import { Octokit } from '@octokit/rest'
 import Promise from 'bluebird'
 import fs from 'fs'
 import BaseStorage from 'ghost-storage-base'
@@ -85,7 +85,7 @@ class GitHubStorage extends BaseStorage {
             readFile(file.path, 'base64')
         ])
             .then(([filename, data]) => {
-                return this.client.repos.createFile({
+                return this.client.repos.createOrUpdateFile({
                     owner: this.owner,
                     repo: this.repo,
                     branch: this.branch,
