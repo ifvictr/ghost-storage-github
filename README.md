@@ -1,13 +1,13 @@
 # ghost-storage-github
 
-GitHub storage adapter for Ghost. Good for blogs hosted on platforms without a persistent filesystem (e.g. [Heroku](https://heroku.com)).
+GitHub storage adapter for Ghost. Good for blogs hosted on platforms without a persistent filesystem (i.e. [Heroku](https://heroku.com)).
 
 ## Installation
 
 ```bash
 cd /path/to/your/ghost/installation
 npm install ghost-storage-github
-mkdir content/adapters/storage
+mkdir -p content/adapters/storage
 cp -r node_modules/ghost-storage-github content/adapters/storage/ghost-storage-github
 ```
 
