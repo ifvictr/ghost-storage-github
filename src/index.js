@@ -22,18 +22,20 @@ class GitHubStorage extends BaseStorage {
             repo
         } = config
 
-        this.branch = process.env.GHOST_GITHUB_BRANCH || branch || 'master'
-        this.destination = process.env.GHOST_GITHUB_DESTINATION || destination || '/'
+        // Required config
+        const token = process.env.GHOST_GITHUB_TOKEN || config.token
         this.owner = process.env.GHOST_GITHUB_OWNER || owner
         this.repo = process.env.GHOST_GITHUB_REPO || repo
-        this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
+        // Optional config
         const baseUrl = utils.removeTrailingSlashes(process.env.GHOST_GITHUB_BASE_URL || config.baseUrl || '')
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
+        this.branch = process.env.GHOST_GITHUB_BRANCH || branch || 'master'
+        this.destination = process.env.GHOST_GITHUB_DESTINATION || destination || '/'
+        this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
-        const token = process.env.GHOST_GITHUB_TOKEN || config.token
         this.client = new Octokit({ auth: `token ${token}` })
     }
 
@@ -58,11 +60,13 @@ class GitHubStorage extends BaseStorage {
                     return false
                 }
 
+                // Just rethrow. This way, no assumptions are made about the file's status.
                 throw e
             })
     }
 
     read(options) {
+        // NOTE: Implemented to address https://github.com/ifvictr/ghost-storage-github/issues/22
         return new Promise((resolve, reject) => {
             const req = utils.getProtocolAdapter(options.path).get(options.path, res => {
                 const data = []
@@ -82,7 +86,7 @@ class GitHubStorage extends BaseStorage {
 
         return Promise.all([
             this.getUniqueFileName(file, dir),
-            readFile(file.path, 'base64')
+            readFile(file.path, 'base64') // GitHub API requires content to use base64 encoding
         ])
             .then(([filename, data]) => {
                 return this.client.repos.createOrUpdateFile({
@@ -95,15 +99,18 @@ class GitHubStorage extends BaseStorage {
                 })
             })
             .then(res => {
+                const { path } = res.data.content
                 if (this.useRelativeUrls) {
-                    return `/${res.data.content.path}`
+                    return `/${path}`
                 }
-                return this.getUrl(res.data.content.path)
+
+                return this.getUrl(path)
             })
             .catch(Promise.reject)
     }
 
     serve() {
+        // No need to serve because absolute URLs are returned
         return (req, res, next) => {
             next()
         }
