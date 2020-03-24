@@ -43,7 +43,22 @@ class GitHubStorage extends BaseStorage {
 
     exists(filename, targetDir) {
         const filepath = path.join(targetDir || this.getTargetDir(), filename)
-        return utils.isWorkingUrl(this.getUrl(filepath))
+
+        return this.client.repos.getContents({
+            method: 'HEAD',
+            owner: this.owner,
+            repo: this.repo,
+            ref: this.branch,
+            path: filepath
+        })
+            .then(res => true)
+            .catch(e => {
+                if (e.status === 404) {
+                    return false
+                }
+
+                throw e
+            })
     }
 
     read(options) {
