@@ -1,17 +1,21 @@
 {
   "name": "ghost-github",
   "version": "1.0.2",
-  "description": "Storage on GitHub for Ghost.",
+  "description": "GitHub storage adapter for Ghost",
   "homepage": "https://github.com/ifvictr/ghost-storage-github#readme",
   "bugs": {
     "url": "https://github.com/ifvictr/ghost-storage-github/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ifvictr/ghost-storage-github.git"
+    "url": "https://github.com/ifvictr/ghost-storage-github.git"
   },
   "license": "MIT",
-  "author": "Victor Truong <me@ifvictr.com> (https://ifvictr.com)",
+  "author": {
+    "name": "Victor Truong",
+    "email": "victor@victortruong.com",
+    "url": "https://victortruong.com"
+  },
   "main": "./build/index.js",
   "scripts": {
     "build": "yarn clean && babel ./src --out-dir ./build",
