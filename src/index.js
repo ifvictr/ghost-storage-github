@@ -122,7 +122,9 @@ class GitHubStorage extends BaseStorage {
 
                 return this.getUrl(path)
             })
-            .catch(Promise.reject)
+            .catch(e => {
+                // Stop failed attempts from preventing retries
+            })
     }
 
     serve() {
