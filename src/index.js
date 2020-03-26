@@ -1,3 +1,5 @@
+import { retry } from '@octokit/plugin-retry'
+import { throttling } from '@octokit/plugin-throttling'
 import { Octokit } from '@octokit/rest'
 import Promise from 'bluebird'
 import fs from 'fs'
@@ -7,6 +9,7 @@ import path from 'path'
 import { URL } from 'url'
 import * as utils from './utils'
 
+const ExtendedOctokit = Octokit.plugin([retry, throttling])
 const readFile = Promise.promisify(fs.readFile)
 
 const RAW_GITHUB_URL = 'https://raw.githubusercontent.com'
@@ -36,7 +39,20 @@ class GitHubStorage extends BaseStorage {
         this.destination = process.env.GHOST_GITHUB_DESTINATION || destination || '/'
         this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
-        this.client = new Octokit({ auth: `token ${token}` })
+        this.client = new ExtendedOctokit({
+            auth: `token ${token}`,
+            throttle: {
+                onRateLimit: (retryAfter, options) => {
+                    console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
+                    if (options.request.retryCount < 3) { // Retry 3 times
+                        return true
+                    }
+                },
+                onAbuseLimit: (retryAfter, options) => {
+                    console.warn(`Abuse detected for request ${options.method} ${options.url}`)
+                }
+            },
+        })
     }
 
     delete() {
@@ -106,7 +122,9 @@ class GitHubStorage extends BaseStorage {
 
                 return this.getUrl(path)
             })
-            .catch(Promise.reject)
+            .catch(e => {
+                // Stop failed attempts from preventing retries
+            })
     }
 
     serve() {
