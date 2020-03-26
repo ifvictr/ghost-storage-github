@@ -40,7 +40,7 @@ class GitHubStorage extends BaseStorage {
         this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
         this.client = new ExtendedOctokit({
-            auth: `token ${token}`,
+            auth: token,
             throttle: {
                 onRateLimit: (retryAfter, options) => {
                     console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
