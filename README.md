@@ -19,24 +19,28 @@ Add the following to your configuration file and modify it accordingly.
 "storage": {
     "active": "ghost-storage-github",
     "ghost-storage-github": {
-        "token": "[my token here]",
-        "owner": "[my username here]",
+        "token": "<your token here>",
+        "owner": "<your username here>",
         "repo": "ghost-assets",
         "branch": "master",
-        "destination": "",
+        "destination": "my/subdirectory",
         "baseUrl": "https://cdn.example.com",
         "useRelativeUrls": false
     }
 }
 ```
 
-- `token`: Personal access token (required)
-- `owner`: Username of the repo's owner (required)
-- `repo`: Name of repo you want to save files to (required)
-- `branch`: Branch you want to save to. If omitted, it will default to master (optional)
-- `destination`: The subdirectory you want all images to go into. If omitted, it will default to the root directory (optional)
-- `baseUrl`: Will use base URL for image requests (optional)
-- `useRelativeUrls`: Will return the relative URL upon image uploads in posts (optional)
+Here's a comprehensive list of configurations:
+
+| **Name**          | **Required?** | **Description**                                                                                                                                                                        | **Environment variable (prefixed with `GHOST_GITHUB_`)** |
+|-------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| `baseUrl`         | no            | Base URL of newly saved images. Uses raw.githubusercontent.com by default                                                                                                              | `BASE_URL`                                               |
+| `branch`          | no            | Branch to push assets to. Defaults to `master`                                                                                                                                         | `BRANCH`                                                 |
+| `destination`     | no            | Directory to push assets to. Defaults to `/`                                                                                                                                           | `DESTINATION`                                            |
+| `owner`           | yes           | Username of the user/organization the repo is under                                                                                                                                    | `OWNER`                                                  |
+| `repo`            | yes           | Name of the repo                                                                                                                                                                       | `REPO`                                                   |
+| `token`           | yes           | Your personal access token                                                                                                                                                             | `TOKEN`                                                  |
+| `useRelativeUrls` | no            | Whether or not to return relative URLs (i.e. under `/content/images`) instead of absolute URLs. Might be of use to people who generate and serve a static version of their Ghost blog. | `USE_RELATIVE_URLS`                                      |
 
 ## Questions
 
