@@ -17,6 +17,9 @@
     "url": "https://victortruong.com"
   },
   "main": "./build/index.js",
+  "files": [
+    "build/"
+  ],
   "scripts": {
     "build": "yarn clean && babel ./src --out-dir ./build",
     "clean": "rm -rf ./build && mkdir ./build",
