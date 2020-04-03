@@ -1,6 +1,6 @@
 {
   "name": "ghost-storage-github",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "GitHub storage adapter for Ghost",
   "homepage": "https://github.com/ifvictr/ghost-storage-github#readme",
   "bugs": {
