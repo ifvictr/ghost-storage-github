@@ -60,4 +60,4 @@ Make sure the repository you specified exists. Also, check to make sure the bran
 
 ## License
 
-[MIT](LICENSE.txt)
+[MIT License](LICENSE.txt)
