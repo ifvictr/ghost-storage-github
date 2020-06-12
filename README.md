@@ -1,6 +1,6 @@
 # ghost-storage-github
 
-GitHub storage adapter for Ghost. Good for blogs hosted on platforms without a persistent filesystem (i.e. [Heroku](https://heroku.com)).
+GitHub storage adapter for Ghost. Recommended as a completely free storage solution for blogs being hosted on platforms with ephemeral filesystems, like [Heroku](https://heroku.com).
 
 ## Installation
 
