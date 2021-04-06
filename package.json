@@ -1,6 +1,6 @@
 {
   "name": "ghost-storage-github",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "GitHub storage adapter for Ghost",
   "homepage": "https://github.com/ifvictr/ghost-storage-github#readme",
   "bugs": {
@@ -27,20 +27,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@octokit/plugin-retry": "^3.0.1",
-    "@octokit/plugin-throttling": "^3.2.0",
-    "@octokit/rest": "^17.1.1",
-    "bluebird": "^3.7.2",
-    "ghost-storage-base": "^0.0.4",
+    "@octokit/plugin-retry": "^3.0.7",
+    "@octokit/plugin-throttling": "^3.4.1",
+    "@octokit/rest": "^18.5.2",
+    "ghost-storage-base": "^0.0.5",
     "is-url": "^1.2.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "babel-plugin-add-module-exports": "^1.0.2"
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.14",
+    "@babel/preset-env": "^7.13.12",
+    "babel-plugin-add-module-exports": "^1.0.4"
   },
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=10.0.0"
   }
 }
