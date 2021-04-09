@@ -6,11 +6,12 @@ import fs from 'fs'
 import BaseStorage from 'ghost-storage-base'
 import isUrl from 'is-url'
 import path from 'path'
+import util from 'util'
 import { URL } from 'url'
 import * as utils from './utils'
 
 const ExtendedOctokit = Octokit.plugin([retry, throttling])
-const readFile = Promise.promisify(fs.readFile)
+const readFile = util.promisify(fs.readFile)
 
 const RAW_GITHUB_URL = 'https://raw.githubusercontent.com'
 
@@ -26,18 +27,18 @@ class GitHubStorage extends BaseStorage {
         } = config
 
         // Required config
-        const token = process.env.GHOST_GITHUB_TOKEN || config.token
-        this.owner = process.env.GHOST_GITHUB_OWNER || owner
-        this.repo = process.env.GHOST_GITHUB_REPO || repo
-        this.branch = process.env.GHOST_GITHUB_BRANCH || branch || 'master'
+        const token = process.env.GHOST_STORAGE_GITHUB_TOKEN || config.token
+        this.owner = process.env.GHOST_STORAGE_GITHUB_OWNER || owner
+        this.repo = process.env.GHOST_STORAGE_GITHUB_REPO || repo
+        this.branch = process.env.GHOST_STORAGE_GITHUB_BRANCH || branch || 'master'
 
         // Optional config
-        const baseUrl = utils.removeTrailingSlashes(process.env.GHOST_GITHUB_BASE_URL || config.baseUrl || '')
+        const baseUrl = utils.removeTrailingSlashes(process.env.GHOST_STORAGE_GITHUB_BASE_URL || config.baseUrl || '')
         this.baseUrl = isUrl(baseUrl)
             ? baseUrl
             : `${RAW_GITHUB_URL}/${this.owner}/${this.repo}/${this.branch}`
-        this.destination = process.env.GHOST_GITHUB_DESTINATION || destination || '/'
-        this.useRelativeUrls = process.env.GHOST_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
+        this.destination = process.env.GHOST_STORAGE_GITHUB_DESTINATION || destination || '/'
+        this.useRelativeUrls = process.env.GHOST_STORAGE_GITHUB_USE_RELATIVE_URLS === 'true' || config.useRelativeUrls || false
 
         this.client = new ExtendedOctokit({
             auth: token,
