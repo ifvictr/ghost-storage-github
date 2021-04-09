@@ -30,7 +30,6 @@
     "@octokit/plugin-retry": "^3.0.1",
     "@octokit/plugin-throttling": "^3.2.0",
     "@octokit/rest": "^17.1.1",
-    "bluebird": "^3.7.2",
     "ghost-storage-base": "^0.0.4",
     "is-url": "^1.2.4"
   },
