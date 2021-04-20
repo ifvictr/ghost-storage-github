@@ -41,6 +41,6 @@
     "babel-plugin-add-module-exports": "^1.0.4"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "^10.13.0"
   }
 }
