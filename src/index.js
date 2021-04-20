@@ -9,7 +9,7 @@ import path from 'path'
 import { URL } from 'url'
 import * as utils from './utils'
 
-const ExtendedOctokit = Octokit.plugin([retry, throttling])
+const ExtendedOctokit = Octokit.plugin(retry, throttling)
 const readFile = Promise.promisify(fs.readFile)
 
 const RAW_GITHUB_URL = 'https://raw.githubusercontent.com'
@@ -63,7 +63,7 @@ class GitHubStorage extends BaseStorage {
         const dir = targetDir || this.getTargetDir()
         const filepath = this.getFilepath(path.join(dir, filename))
 
-        return this.client.repos.getContents({
+        return this.client.repos.getContent({
             method: 'HEAD',
             owner: this.owner,
             repo: this.repo,
@@ -105,7 +105,7 @@ class GitHubStorage extends BaseStorage {
             readFile(file.path, 'base64') // GitHub API requires content to use base64 encoding
         ])
             .then(([filename, data]) => {
-                return this.client.repos.createOrUpdateFile({
+                return this.client.repos.createOrUpdateFileContents({
                     owner: this.owner,
                     repo: this.repo,
                     branch: this.branch,
